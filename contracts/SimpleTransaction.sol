@@ -14,6 +14,18 @@ contract SimpleTransaction is Ownable {
 
     event TransactionReceived(address indexed transactor, uint transactionValue); 
 
+    function getTransactors() public view returns(address[] memory) {
+        return transactors;
+    }
+
+    function getBalance() public view returns(uint) {
+        return totalBalance;
+    }
+
+    function getTransactionValue(address _transactor) public view returns(uint) {
+        return transactions[_transactor];
+    }
+
     receive() external payable {
         require(msg.value > 0 ether, "Transaction value is less than zero");
 

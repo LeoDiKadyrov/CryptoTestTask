@@ -26,6 +26,11 @@ describe("SimpleTransaction", function () {
     }
 
     await expect(addr1.sendTransaction(options)).to.be.revertedWith("Transaction value is less than zero");
-  });
 
+    await expect(await this.contract.getTransactionValue(addr1.address)).to.equal(0);
+
+    await expect(await this.contract.getTransactors()).to.deep.equal([]);
+
+    await expect(await this.contract.getBalance()).to.equal(0);
+  });
 });

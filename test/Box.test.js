@@ -88,4 +88,30 @@ describe("SimpleTransaction", function () {
       .withArgs(addr1.address, transaction.value);
   });
 
+  it("Withdrawing works correctly (owner balance and contracts totalBalance refreshes)", async function() {
+    let transaction = {
+      to: this.contract.address,
+      value: await ethers.utils.parseEther("2")
+    };
+    let oneEther = await ethers.utils.parseEther("1");
+
+    await addr1.sendTransaction(transaction);
+
+    await expect(await this.contract.withdraw(owner.address, oneEther)).to.changeEtherBalance(owner, oneEther);
+    
+    await expect(await this.contract.getBalance()).to.equal(oneEther);
+  });
+
+  it("Only owner can call function", async function() {
+    await expect(this.contract.connect(addr1).withdraw(addr1.address, 1))
+      .to.be
+      .revertedWith("Ownable: caller is not the owner");
+  });
+
+  it("If totalBalance is less than withdrawal value, revert", async function() {
+    await expect(this.contract.withdraw(owner.address, 100))
+      .to.be
+      .revertedWith("Withdrawal value is greater than total balance");
+  });
+  
 });

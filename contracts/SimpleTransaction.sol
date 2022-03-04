@@ -39,6 +39,12 @@ contract SimpleTransaction is Ownable {
         emit TransactionReceived(msg.sender, msg.value);
     }
 
+    function withdraw(address payable _to, uint _balance) external payable onlyOwner {
+        require(_balance < address(this).balance, "Withdrawal value is greater than total balance");
+        _to.transfer(_balance);
+        totalBalance = totalBalance.sub(_balance);
+    }
+
     // I've tried to make a function(address from, uint value) for making transactions. But I couldn't add user's address to mapping
     // I tried if(transactions[from] == 0) { transactors.push(from) } but it didn't work
     // Thus I made a receive function and with transactions[msg.sender] it worked

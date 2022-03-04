@@ -1,23 +1,31 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("Box", function () {
+describe("SimpleTransaction", function () {
+  let owner, addr1;
+
   before(async function () {
-    this.Box = await ethers.getContractFactory('Box');
+    this.SimpleTransaction = await ethers.getContractFactory('SimpleTransaction');
   });
 
   beforeEach(async function () {
-    this.box = await this.Box.deploy();
-    await this.box.deployed();
+    [owner, addr1] = await ethers.getSigners();
+    this.contract = await this.SimpleTransaction.deploy();
+    await this.contract.deployed();
   });
 
   // Test case
-  it('retrieve returns a value previously stored', async function () {
-    // Store a value
-    await this.box.store(42);
-
-    // Test if the returned value is the same one
-    // Note that we need to use strings to compare the 256 bit integers
-    expect((await this.box.retrieve()).toString()).to.equal('42');
+  it('Owner should be set correctly', async function () {  
+    expect((await this.contract.owner())).to.equal(owner.address);
   });
+
+  it("If transaction value < 0 should revert", async function () {
+    let options = {
+      to: this.contract.address,
+      value: await ethers.utils.parseEther("0")
+    }
+
+    await expect(addr1.sendTransaction(options)).to.be.revertedWith("Transaction value is less than zero");
+  });
+
 });

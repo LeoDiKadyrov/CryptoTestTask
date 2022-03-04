@@ -77,4 +77,15 @@ describe("SimpleTransaction", function () {
     await expect(await this.contract.getBalance()).to.equal(sumOfTransactionsValue);
   });
 
+  it("TransactionReceived event emitted correctly", async function() {
+    let transaction = {
+      to: this.contract.address,
+      value: await ethers.utils.parseEther("1")
+    };
+
+    await expect(await addr1.sendTransaction(transaction))
+      .to.emit(this.contract, "TransactionReceived")
+      .withArgs(addr1.address, transaction.value);
+  });
+
 });

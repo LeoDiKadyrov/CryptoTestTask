@@ -13,3 +13,4 @@ npx hardhat node
 node scripts/sample-script.js
 npx hardhat help
 ```
+rinkeby testnet address: 0xC77675951BCC74Ce4A2DEB8d307CFa174a089f8c

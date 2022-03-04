@@ -70,9 +70,9 @@ describe("SimpleTransaction", function () {
     };
 
     await addr1.sendTransaction(transaction);
-    transaction.value = await ethers.utils.parseEther("5");
+    transaction.value = await ethers.utils.parseEther("1");
     await addr1.sendTransaction(transaction);
-    let sumOfTransactionsValue = await ethers.utils.parseEther("6");
+    let sumOfTransactionsValue = await ethers.utils.parseEther("2");
 
     await expect(await this.contract.getBalance()).to.equal(sumOfTransactionsValue);
   });
@@ -113,5 +113,5 @@ describe("SimpleTransaction", function () {
       .to.be
       .revertedWith("Withdrawal value is greater than total balance");
   });
-  
+
 });

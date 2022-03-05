@@ -3,7 +3,6 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "hardhat/console.sol";
 
 contract SimpleTransaction is Ownable {
     using SafeMath for uint256; // When we were adding msg.value to transactions[user], it couldn't use "add" for uint256

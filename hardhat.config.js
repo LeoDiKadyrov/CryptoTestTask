@@ -1,9 +1,11 @@
 require("@nomiclabs/hardhat-waffle");
-require('@nomiclabs/hardhat-ethers');
-require('dotenv').config()
+require('dotenv').config();
+require('solidity-coverage');
+require('./tasks/tasks.js') 
+require("@nomiclabs/hardhat-ethers");
 
-// This is a sample Hardhat task. To learn how to create your own go to
-// https://hardhat.org/guides/create-task.html
+const { ALCHEMY_API_KEY, MNEMONIC } = process.env;
+
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
   const accounts = await hre.ethers.getSigners();
   
@@ -28,8 +30,8 @@ module.exports = {
   },
   networks: {
     rinkeby: {
-      url: `https://eth-rinkeby.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`,
-      accounts: { mnemonic: process.env.MNEMONIC },
+      url: `https://eth-rinkeby.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
+      accounts: { mnemonic: MNEMONIC },
     },
   },
 };
